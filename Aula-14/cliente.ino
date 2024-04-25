@@ -38,7 +38,7 @@ void setup() {
   }
 
   radio.setPALevel(RF24_PA_MAX);  // RF24_PA_MAX is default.
-  radio.setChannel(100);
+  radio.setChannel(117);
   radio.setPayloadSize(sizeof(payload));  // float datatype occupies 4 bytes
   radio.setAutoAck(false);
   radio.setCRCLength(RF24_CRC_DISABLED);
@@ -81,8 +81,8 @@ bool aguardaMsg(int tipo){
       if (radio.available()) {              // is there a payload? get the pipe number that recieved it
         uint8_t bytes = radio.getPayloadSize();  // get the size of the payload
         radio.read(&payloadRx[0], bytes);             // fetch payload from FIFO
-        if(payloadRx[1]==origem && payloadRx[2]==tipo){
-          
+        if(payloadRx[1]==origem && payloadRx[3]==tipo){
+          printPacote(&payloadRx[0], sizeof(payload));
           radio.stopListening();
           return true;
         }
